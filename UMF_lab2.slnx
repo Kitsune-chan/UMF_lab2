@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="UMF_lab2/UMF_lab2.vcxproj" />
+  <Project Path="UMF_lab2/UMF_lab2.vcxproj" Id="b0435356-677a-4121-bd73-7ceb7fa50724" />
 </Solution>

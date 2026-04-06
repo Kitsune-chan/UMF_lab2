@@ -15,38 +15,50 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mesh.h">
+    <ClInclude Include="quadrature.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="fe.h">
+    <ClInclude Include="types.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="matrix.h">
+    <ClInclude Include="banded.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="problem.h">
+    <ClInclude Include="solvers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="nonlinear_solver.h">
+    <ClInclude Include="fem.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fe.cpp">
+    <ClCompile Include="qudrature.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="nonlinear_solver.cpp">
+    <ClCompile Include="fem.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="matrix.cpp">
+    <ClCompile Include="banded.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="solvers.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="solution_mixed.txt">
+    <Text Include="pojasn.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="properties.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

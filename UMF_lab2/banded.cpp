@@ -1,54 +1,78 @@
-#include "matrix.h"
+#include "banded.h"
+#include <cmath>
+#include <stdexcept>
 #include <algorithm>
 
-TridiagonalMatrix::TridiagonalMatrix(int n) : n_(n) {
-    a_.resize(n, 0.0);
-    b_.resize(n, 0.0);
-    c_.resize(n, 0.0);
+double getBand(const Data& system, int i, int j) {
+    int row = system.hw + i - j;
+    if (row < 0 || row >= 2 * system.hw + 1) return 0.0;
+    return system.matrix[row][j];
 }
 
-void TridiagonalMatrix::setZero() {
-    std::fill(a_.begin(), a_.end(), 0.0);
-    std::fill(b_.begin(), b_.end(), 0.0);
-    std::fill(c_.begin(), c_.end(), 0.0);
+void setBand(Data& system, int i, int j, double value) {
+    int row = system.hw + i - j;
+    if (row >= 0 && row < 2 * system.hw + 1)
+        system.matrix[row][j] = value;
 }
 
-void TridiagonalMatrix::addToMain(int i, double val) {
-    b_[i] += val;
+void addBand(Data& system, int i, int j, double value) {
+    int row = system.hw + i - j;
+    if (row >= 0 && row < 2 * system.hw + 1)
+        system.matrix[row][j] += value;
 }
 
-void TridiagonalMatrix::addToLower(int i, double val) {
-    if (i > 0) a_[i] += val;
-}
-
-void TridiagonalMatrix::addToUpper(int i, double val) {
-    if (i < n_ - 1) c_[i] += val;
-}
-
-void TridiagonalMatrix::setRow(int i, double main_val, double lower_val, double upper_val) {
-    b_[i] = main_val;
-    if (i > 0) a_[i] = lower_val;
-    if (i < n_ - 1) c_[i] = upper_val;
-}
-
-std::vector<double> TridiagonalMatrix::solve(const std::vector<double>& rhs) const {
-    std::vector<double> x(n_);
-    std::vector<double> alpha(n_), beta(n_);
-    // Прямой ход
-    alpha[0] = -c_[0] / b_[0];
-    beta[0] = rhs[0] / b_[0];
-    for (int i = 1; i < n_; ++i) {
-        double denom = b_[i] + a_[i] * alpha[i - 1];
-        if (i < n_ - 1)
-            alpha[i] = -c_[i] / denom;
-        else
-            alpha[i] = 0.0;
-        beta[i] = (rhs[i] - a_[i] * beta[i - 1]) / denom;
+void bandLU(Data& system) {
+    int N = system.m;
+    int hw = system.hw;
+    for (int k = 0; k < N; ++k) {
+        double akk = getBand(system, k, k);
+        if (std::abs(akk) < 1e-14) {
+            throw std::runtime_error("Zero or small pivot in LU");
+        }
+        for (int i = k + 1; i <= std::min(N - 1, k + hw); ++i) {
+            double aik = getBand(system, i, k);
+            if (std::abs(aik) < 1e-15) continue;
+            double lik = aik / akk;
+            setBand(system, i, k, lik);
+            for (int j = k + 1; j <= std::min(N - 1, i + hw); ++j) {
+                double aij = getBand(system, i, j);
+                double akj = getBand(system, k, j);
+                setBand(system, i, j, aij - lik * akj);
+            }
+        }
     }
-    // Обратный ход
-    x[n_ - 1] = beta[n_ - 1];
-    for (int i = n_ - 2; i >= 0; --i) {
-        x[i] = alpha[i] * x[i + 1] + beta[i];
+}
+
+std::vector<double> forward(const Data& system, const std::vector<double>& b) {
+    int N = system.m;
+    int hw = system.hw;
+    std::vector<double> y(N, 0.0);
+    for (int i = 0; i < N; ++i) {
+        double sum = b[i];
+        for (int j = std::max(0, i - hw); j < i; ++j) {
+            sum -= getBand(system, i, j) * y[j];
+        }
+        y[i] = sum; // diag(L)=1
+    }
+    return y;
+}
+
+std::vector<double> backward(const Data& system, const std::vector<double>& y) {
+    int N = system.m;
+    int hw = system.hw;
+    std::vector<double> x(N, 0.0);
+    for (int i = N - 1; i >= 0; --i) {
+        double sum = y[i];
+        for (int j = i + 1; j <= std::min(N - 1, i + hw); ++j) {
+            sum -= getBand(system, i, j) * x[j];
+        }
+        x[i] = sum / getBand(system, i, i);
     }
     return x;
+}
+
+std::vector<double> solveLU(Data& system) {
+    bandLU(system);
+    std::vector<double> y = forward(system, system.b);
+    return backward(system, y);
 }

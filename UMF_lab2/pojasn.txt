@@ -1,0 +1,6 @@
+nx nt
+x0 x1
+t0 t1 
+qx qt
+max_iter eps
+lambda

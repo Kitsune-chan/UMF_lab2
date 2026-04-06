@@ -127,20 +127,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="fe.h" />
-    <ClInclude Include="matrix.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="nonlinear_solver.h" />
-    <ClInclude Include="problem.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="banded.h" />
+    <ClInclude Include="quadrature.h" />
+    <ClInclude Include="fem.h" />
+    <ClInclude Include="solvers.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fe.cpp" />
+    <ClCompile Include="qudrature.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="matrix.cpp" />
-    <ClCompile Include="nonlinear_solver.cpp" />
+    <ClCompile Include="banded.cpp" />
+    <ClCompile Include="fem.cpp" />
+    <ClCompile Include="solvers.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="solution_mixed.txt" />
+    <Text Include="properties.txt" />
+    <Text Include="pojasn.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

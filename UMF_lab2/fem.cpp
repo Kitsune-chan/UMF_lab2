@@ -18,16 +18,21 @@ double dphi_dxi(int a, double xi) {
 }
 
 double globalNodeCoord(const Data& system, int id) {
-    return system.elemNodes[id]; // id = 0..n
+    return system.elemNodes[id];
 }
 
 // ----- нелинейность sigma(u) -----
 double sigma(double u) {
-    return 1.0 + u * u;
+    //return 1 + u * u;
+    //return 2.0 * u;
+    return 5;
+    //return 1;
 }
 
 double dsigma_du(double u) {
-    return 2.0 * u;
+    //return 2.0 * u;
+    //return 2.0;
+    return 0.0;
 }
 
 // ----- правая часть (не зависит от u) -----
@@ -37,13 +42,40 @@ double dsigma_du(double u) {
 // В реальной задаче f задаётся независимо.
 double rhs_f(double x, double t) {
     double u = exactSolution(x, t);
+    
     double u_xx = -(M_PI * M_PI / 100.0) * u;
-    double u_t = -u;
+    //double u_xx = -t * 2.0;
+    //double u_xx = 0.0;
+    //double u_xx = 2.0;
+    //double u_xx = 6.0 * x;
+    //double u_xx = 12.0 * x * x * t;
+
+    //double u_xx = 0.0;
+
+    double u_t = -exactSolution(x, t);
+    //double u_t = 10.0 * x - x * x;
+    //double u_t = x;
+    //double u_t = x * x;
+    //double u_t = x * x * x;
+    //double u_t = x * x * x * x;
+
+    //double u_t = 0.0;
+    //double u_t = 2.0 * t;
+
     return -u_xx + sigma(u) * u_t;
 }
 
 double exactSolution(double x, double t) {
     return std::exp(-t) * std::sin(M_PI * x / 10.0);
+    //return t * x * (10.0 - x);
+    //return t * x;
+    //return x * x;
+    //return x * x * x;
+    //return t * x * x * x * x;
+
+    //return t;
+    //return t * t;
+    
 }
 
 // ----- вспомогательная лямбда для интегрирования по элементу -----

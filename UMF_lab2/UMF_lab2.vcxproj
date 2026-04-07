@@ -145,6 +145,7 @@
   <ItemGroup>
     <Text Include="properties.txt" />
     <Text Include="pojasn.txt" />
+    <Text Include="solution.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

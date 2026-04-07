@@ -61,5 +61,8 @@
     <Text Include="properties.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="solution.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

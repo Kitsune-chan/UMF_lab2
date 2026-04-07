@@ -14,7 +14,7 @@ int main() {
         system.x_prev[i] = exactSolution(x, system.t0);
     }
 
-    bool useNewton = false;  // true – Ньютон, false – простая итерация
+    bool useNewton = true;  // true – Ньютон, false – простая итерация
 
     for (int k = 0; k < system.tn; ++k) {
         double dt = system.time[k + 1] - system.time[k];
@@ -27,7 +27,7 @@ int main() {
         else
             iters = simpleIteration(system, dt, t);
 
-        std::cout << "t = " << t << ", iterations = " << iters << std::endl;
+        std::cout << t << " " << iters << std::endl;
         system.x_prev = system.x;
     }
 

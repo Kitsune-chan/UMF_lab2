@@ -53,7 +53,7 @@ int newton(Data& system, double dt, double t) {
             norm_delta += delta[i] * delta[i];
         }
         norm_delta = std::sqrt(norm_delta);
-        if (norm_delta < system.epsilon) return iter + 1;
+        if (norm_delta < system.epsilon) return iter;
     }
     return system.maxiter;
 }

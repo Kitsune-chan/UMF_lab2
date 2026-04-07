@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <iomanip>
 
 void fillElems(Data& system) {
     system.elemNodes.assign(system.n + 1, 0.0);
@@ -89,7 +90,7 @@ void nodalError(const Data& system) {
         sum += err * err;
     }
     sum = std::sqrt(sum / system.m);
-    std::cout << "nodal error = " << sum << std::endl;
+    std::cout << std::scientific << std::setprecision(5) << "nodal error = " << sum << std::endl;
 }
 
 void elemError(const Data& system) {
@@ -111,5 +112,5 @@ void elemError(const Data& system) {
             }, x0, x1);
         err += local_err;
     }
-    std::cout << "L2 error = " << std::sqrt(err) << std::endl;
+    std::cout << std::scientific << std::setprecision(5) << "L2 error = " << std::sqrt(err) << std::endl;
 }
